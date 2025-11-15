@@ -1,0 +1,19 @@
+name: aisweeper
+version: 0.1.0
+
+authors:
+  - mario <github@lxxxvi.ch>
+
+targets:
+  aisweeper:
+    main: src/aisweeper.cr
+
+crystal: '>= 1.18.0'
+
+license: MIT
+
+dependencies:
+  kemal:
+    github: kemalcr/kemal
+  spec-kemal:
+    github: kemalcr/spec-kemal

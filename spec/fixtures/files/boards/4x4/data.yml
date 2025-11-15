@@ -1,0 +1,33 @@
+---
+- - infested: true
+    state: Flagged
+  - infested: false
+    state: Questionmarked
+  - infested: false
+    state: Unexplored
+  - infested: false
+    state: Unexplored
+- - infested: true
+    state: Unexplored
+  - infested: false
+    state: Explored
+  - infested: false
+    state: Unexplored
+  - infested: false
+    state: Unexplored
+- - infested: false
+    state: Unexplored
+  - infested: false
+    state: Unexplored
+  - infested: false
+    state: Unexplored
+  - infested: false
+    state: Unexplored
+- - infested: false
+    state: Unexplored
+  - infested: false
+    state: Unexplored
+  - infested: false
+    state: Unexplored
+  - infested: false
+    state: Unexplored

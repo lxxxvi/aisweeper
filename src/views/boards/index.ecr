@@ -1,0 +1,32 @@
+<h2>All boards</h2>
+
+<form action="/boards" method="post">
+  <input type="submit" value="Create new board" />
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% boards.each do |board| %>
+      <tr>
+        <td>
+          <a href="/boards/<%= board.id %>"><%= board.id %></a>
+        </td>
+
+        <td>
+          <% if board.won? %>
+            Won 🏆
+          <% elsif board.lost? %>
+            Lost 🙁
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

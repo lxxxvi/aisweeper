@@ -1,0 +1,19 @@
+---
+- - infested: false
+    state: Unexplored
+  - infested: false
+    state: Unexplored
+  - infested: false
+    state: Unexplored
+- - infested: false
+    state: Unexplored
+  - infested: true
+    state: Unexplored
+  - infested: false
+    state: Unexplored
+- - infested: false
+    state: Unexplored
+  - infested: false
+    state: Unexplored
+  - infested: false
+    state: Unexplored

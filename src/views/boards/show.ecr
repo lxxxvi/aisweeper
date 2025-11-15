@@ -1,0 +1,62 @@
+<a href="/">Back</a>
+
+<h2><%= board.id %></h2>
+
+<div>
+  <% if board.ended? %>
+    <% if board.won? %>
+      Game WON! 🏆
+    <% else %>
+      Game lost... 🙁
+    <% end %>
+  <% elsif board.ongoing? %>
+    Game started
+  <% else %>
+    Game not started
+  <% end %>
+</div>
+
+<ul class="board">
+  <% board.rows.each_with_index do |row, y| %>
+    <li>
+      <ul class="board--row">
+        <% row.each_with_index do |tile, x| %>
+          <%
+            icon = case tile
+                   when .infected? then "👾"
+                   when .flagged? then "🏴‍☠️"
+                   when .questionmarked? then "❓"
+                   else ""
+                   end
+          %>
+          <li class="tile">
+            <% if board.ended? && tile.infested? %>
+              <output class="xy-center <%= tile.infected? ? "infected" : "infested" %>">
+                <%= icon %>
+              </output>
+            <% elsif !tile.state.explored? %>
+              <form action="/boards/<%= board.id %>/tile/<%= "#{x},#{y}" %>" method="post">
+                <select name="action" class="hidden">
+                  <option value="left">Left</option>
+                  <option value="right">Right</option>
+                </select>
+
+                <input type="submit"
+                       class="xy-center"
+                       value="<%= icon %>"
+                       <%= board.ended? ? "disabled=\"disabled\"" : nil %>
+                       oncontextmenu="this.parentElement.querySelector('select').value = 'right'; this.parentElement.requestSubmit(); return false;"
+                       />
+              </form>
+            <% else %>
+              <% neighbouring_infested_tiles = board.neighbouring_infested_tiles(x: x.to_i8, y: y.to_i8).size %>
+              <output class="xy-center neighboring-infested-tiles-<%= neighbouring_infested_tiles %>">
+                <%= neighbouring_infested_tiles %>
+              </output>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </li>
+  <% end %>
+</ul>

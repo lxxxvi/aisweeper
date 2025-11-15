@@ -1,0 +1,80 @@
+html {
+  background-color: Black;
+  color: Gainsboro;
+  font-family: "Comic Sans MS";
+  font-size: 20px;
+}
+
+a {
+  color: lightpink;
+}
+
+.xy-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.board, .board--row {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.board--row {
+  display: flex;
+}
+
+.tile {
+  display: flex;
+  height: 50px;
+  width: 50px;
+}
+
+.tile form {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.tile form input {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: darkgray;
+  border-width: 4px;
+  border-style: solid;
+  border-color: lightgray gray gray lightgray;
+}
+
+.tile form input:not(disabled) {
+  cursor: pointer;
+}
+
+.tile form input:not(disabled):hover {
+  opacity: 0.9;
+}
+
+.hidden {
+  display: none;
+}
+
+.infected {
+  background-color: red;
+}
+
+.infested {
+  background-color: ivory;
+}
+
+.neighboring-infested-tiles-0 { color: transparent; }
+.neighboring-infested-tiles-1 { color: lightblue; }
+.neighboring-infested-tiles-2 { color: pink; }
+.neighboring-infested-tiles-3 { color: seashell; }
+.neighboring-infested-tiles-4 { color: deeppink; }
+.neighboring-infested-tiles-5 { color: khaki; }
+.neighboring-infested-tiles-6 { color: lightsalmon; }
+.neighboring-infested-tiles-7 { color: lime; }
+.neighboring-infested-tiles-8 { color: yellow; }
