@@ -1,4 +1,5 @@
 require "yaml"
+require "file_utils"
 
 class Aisweeper::BoardStore
   DEFAULT_BASE_PATH = Path["./storage/boards"]
@@ -25,6 +26,12 @@ class Aisweeper::BoardStore
         Aisweeper::Tile.new(infested: infested, state: state)
       end
     end
+  end
+
+  def delete
+    return if !File.exists?(board_file_path)
+
+    FileUtils.rm_rf(board_file_path.dirname)
   end
 
   def board_file_path

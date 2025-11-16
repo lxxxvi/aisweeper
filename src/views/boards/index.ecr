@@ -9,6 +9,7 @@
     <tr>
       <th></th>
       <th>&nbsp;</th>
+      <th>&nbsp;</th>
     </tr>
   </thead>
 
@@ -20,11 +21,14 @@
         </td>
 
         <td>
-          <% if board.won? %>
-            Won 🏆
-          <% elsif board.lost? %>
-            Lost 🙁
-          <% end %>
+          <%= board.status.render_as_output %>
+        </td>
+
+        <td>
+          <form action="/boards/<%= board.id %>" method="post">
+            <input type="hidden" name="_method" value="delete" />
+            <input type="submit" value="Delete" />
+          </form>
         </td>
       </tr>
     <% end %>

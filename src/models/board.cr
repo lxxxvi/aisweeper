@@ -1,11 +1,9 @@
 class Aisweeper::Board
   getter id : String
   getter rows : Array(Array(Aisweeper::Tile))
-  # getter flattened_rows : Array(Aisweeper::Tile)
   getter store : Aisweeper::BoardStore
 
   def initialize(@id : String, @rows : Array(Array(Aisweeper::Tile)), @store : Aisweeper::BoardStore)
-    # @flattened_rows = rows.flatten
   end
 
   def self.all(storage_base_path : Path = Aisweeper::BoardStore::DEFAULT_BASE_PATH)
@@ -36,8 +34,16 @@ class Aisweeper::Board
     self.new(id: id, rows: rows, store: store)
   end
 
+  def delete
+    store.delete
+  end
+
+  def status
+    Aisweeper::Board::Status.new(board: self)
+  end
+
   def left_click(x : Int8, y : Int8)
-    return if ended?
+    return if status.ended?
 
     target_tile = rows[y][x]
 
@@ -107,28 +113,5 @@ class Aisweeper::Board
 
   def neighbouring_infested_tiles(x : Int8, y : Int8)
     neighbouring_tiles(x: x, y: y).select &.infested?
-  end
-
-  def won?
-    !lost? &&
-      rows.flatten.reject(&.infested?).all? do |tile|
-        tile.state.explored?
-      end
-  end
-
-  def lost?
-    rows.flatten.any?(&.infected?)
-  end
-
-  def started?
-    rows.flatten.any?(&.state.explored?)
-  end
-
-  def ongoing?
-    started? && !ended?
-  end
-
-  def ended?
-    won? || lost?
   end
 end

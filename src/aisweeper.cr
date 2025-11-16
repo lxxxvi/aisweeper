@@ -2,6 +2,7 @@ require "kemal"
 require "./models/tile.cr"
 require "./models/tiles_creator.cr"
 require "./models/board.cr"
+require "./models/board/status.cr"
 require "./models/board_store.cr"
 require "./models/rows_creator.cr"
 
@@ -19,6 +20,16 @@ post "/boards" do |env|
   board = Aisweeper::Board.find_or_create
 
   env.redirect "/boards/#{board.id}/"
+end
+
+post "/boards/:id" do |env|
+  http_method = env.params.body["_method"]
+
+  if http_method.downcase == "delete"
+    board = Aisweeper::Board.find(id: env.params.url["id"])
+    board.delete
+    env.redirect "/"
+  end
 end
 
 post "/boards/:id/tile/:coordinates" do |env|
