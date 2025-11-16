@@ -3,17 +3,7 @@
 <h2><%= board.id %></h2>
 
 <div>
-  <% if board.ended? %>
-    <% if board.won? %>
-      Game WON! 🏆
-    <% else %>
-      Game lost... 🙁
-    <% end %>
-  <% elsif board.ongoing? %>
-    Game started
-  <% else %>
-    Game not started
-  <% end %>
+  <%= board.status.render_as_output %>
 </div>
 
 <ul class="board">
@@ -30,7 +20,7 @@
                    end
           %>
           <li class="tile">
-            <% if board.ended? && tile.infested? %>
+            <% if board.status.ended? && tile.infested? %>
               <output class="xy-center <%= tile.infected? ? "infected" : "infested" %>">
                 <%= icon %>
               </output>
@@ -44,7 +34,7 @@
                 <input type="submit"
                        class="xy-center"
                        value="<%= icon %>"
-                       <%= board.ended? ? "disabled=\"disabled\"" : nil %>
+                       <%= board.status.ended? ? "disabled=\"disabled\"" : nil %>
                        oncontextmenu="this.parentElement.querySelector('select').value = 'right'; this.parentElement.requestSubmit(); return false;"
                        />
               </form>
