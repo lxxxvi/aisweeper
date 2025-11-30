@@ -1,20 +1,23 @@
 <h2>All boards</h2>
 
-<form action="/boards" method="post">
-  <input type="submit" value="Create new board" />
-</form>
+<a href="/boards/new">Create new board</a>
 
 <table>
   <thead>
     <tr>
-      <th></th>
-      <th>&nbsp;</th>
+      <th>#</th>
+      <th>Status</th>
+      <th>Dimensions</th>
+      <th>Infested</th>
+      <th>Explored</th>
+
       <th>&nbsp;</th>
     </tr>
   </thead>
 
   <tbody>
     <% boards.each do |board| %>
+      <% stats = board.stats %>
       <tr>
         <td>
           <a href="/boards/<%= board.id %>"><%= board.id %></a>
@@ -22,6 +25,18 @@
 
         <td>
           <%= board.status.render_as_output %>
+        </td>
+
+        <td>
+          <%= "#{stats["rows"]}x#{stats["columns"]} (Total #{stats["total_cells"]})" %>
+        </td>
+
+        <td>
+          <%= "#{stats["infested"]} (#{stats["infested_ratio"].round}%)" %>
+        </td>
+
+        <td>
+          <%= "#{stats["explored_ratio"].round}%" %>
         </td>
 
         <td>

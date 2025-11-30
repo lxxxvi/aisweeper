@@ -1,3 +1,5 @@
+require "../../spec_helper"
+
 describe Aisweeper::Board::Status do
   it "not_started" do
     with_tempdir do |tempdir|

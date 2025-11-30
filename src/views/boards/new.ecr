@@ -1,0 +1,47 @@
+<a href="/">Back</a>
+
+<h2>New board</h2>
+
+<% if form.errors.any? %>
+  <ul>
+    <% form.errors.each do |error| %>
+      <li><%= error %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<h3>Presets</h3>
+
+<form action="/boards" method="post">
+  <input type="hidden" name="rows" value="10" />
+  <input type="hidden" name="columns" value="10" />
+  <input type="hidden" name="infested" value="10" />
+  <input type="submit" value="10x10 (10 AIs) - Easy" />
+</form>
+
+<form action="/boards" method="post">
+  <input type="hidden" name="rows" value="15" />
+  <input type="hidden" name="columns" value="15" />
+  <input type="hidden" name="infested" value="30" />
+  <input type="submit" value="15x15 (30 AIs) - Medium" />
+</form>
+
+<form action="/boards" method="post">
+  <input type="hidden" name="rows" value="20" />
+  <input type="hidden" name="columns" value="20" />
+  <input type="hidden" name="infested" value="80" />
+  <input type="submit" value="20x20 (80 AIs) - Hard" />
+</form>
+
+<h3>Custom</h3>
+
+<form action="/boards" method="post">
+  <label for="rows">Rows</label>
+  <input type="number" min="1" max="100" step="1" name="rows" value="<%= form.rows %>" />
+  <label for="rows">Columns</label>
+  <input type="number" min="1" max="100" step="1" name="columns" value="<%= form.columns %>" />
+  <label for="rows">AIs</label>
+  <input type="number" min="1" max="100" step="1" name="infested" value="<%= form.infested %>" />
+
+  <input type="submit" value="Create board" />
+</form>
