@@ -6,6 +6,57 @@
   <%= board.status.render_as_output %>
 </div>
 
+<% if board.status.ended? %>
+  <%
+    rows = board.rows.size
+    columns = board.rows.first.size
+    infested = board.rows.flatten.count(&.infested?)
+  %>
+  <form action="/boards" method="post">
+    <input type="hidden" name="rows" value="<%= rows %>" />
+    <input type="hidden" name="columns" value="<%= columns %>" />
+    <input type="hidden" name="infested" value="<%= infested %>" />
+    <input type="submit" value="Start another one with <%= rows %>x<%= columns %> (<%= infested %> AIs)" />
+  </form>
+<% end %>
+
+<% stats = board.stats %>
+<table>
+  <thead>
+    <tr>
+      <th>Dimensions</th>
+      <th>Total cells</th>
+      <th>Infested</th>
+      <th>Infested ratio</th>
+      <th>Explored ratio</th>
+      <th>Remaining flags</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        <%= "#{stats["rows"]}x#{stats["columns"]}" %>
+      </td>
+      <td>
+        <%= stats["total_cells"] %>
+      </td>
+      <td>
+        <%= stats["infested"] %>
+      </td>
+      <td>
+        <%= stats["infested_ratio"].round %>
+      </td>
+      <td>
+        <%= stats["explored_ratio"].round %>
+      </td>
+      <td>
+        <%= stats["infested"] - stats["flagged"] %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 <ul class="board">
   <% board.rows.each_with_index do |row, y| %>
     <li>

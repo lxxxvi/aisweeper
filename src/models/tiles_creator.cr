@@ -1,5 +1,5 @@
 class Aisweeper::TilesCreator
-  getter tiles : UInt8
+  getter tiles : UInt16
   getter infested : UInt8
 
   def initialize(@tiles = 100, @infested = 10)

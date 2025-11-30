@@ -622,101 +622,20 @@ describe Aisweeper::Board do
     end
   end
 
-  # context "#won?, #lost?, #started?, #ongoing?, #ended?" do
-  #   it "unstarted" do
-  #     with_tempdir do |tempdir|
-  #       rows = [
-  #         [
-  #           Aisweeper::Tile.new,
-  #           Aisweeper::Tile.new,
-  #         ],
-  #         [
-  #           Aisweeper::Tile.new,
-  #           Aisweeper::Tile.new,
-  #         ],
-  #       ]
+  context "stats" do
+    it "contains rows, columns, total_cells, infested, infested_ratio, explored_ratio, questionmarked" do
+      with_temp_fixture("boards/4x4/data.yml") do |_temp_fixture_file, tempdir|
+        board = Aisweeper::Board.find_or_create("4x4", storage_base_path: tempdir.join("boards"))
+        stats = board.stats
 
-  #       board_store = Aisweeper::BoardStore.new(id: "2x2", storage_base_path: tempdir)
-  #       board = Aisweeper::Board.new(id: "2x2", rows: rows, store: board_store)
-
-  #       board.status.won?.should eq(false)
-  #       board.status.lost?.should eq(false)
-  #       board.started?.should eq(false)
-  #       board.ongoing?.should eq(false)
-  #       board.ended?.should eq(false)
-  #     end
-  #   end
-
-  #   it "is won" do
-  #     with_tempdir do |tempdir|
-  #       rows = [
-  #         [
-  #           Aisweeper::Tile.new(infested: true),
-  #           Aisweeper::Tile.new(state: Aisweeper::Tile::State::Explored),
-  #         ],
-  #         [
-  #           Aisweeper::Tile.new(state: Aisweeper::Tile::State::Explored),
-  #           Aisweeper::Tile.new(state: Aisweeper::Tile::State::Explored),
-  #         ],
-  #       ]
-
-  #       board_store = Aisweeper::BoardStore.new(id: "2x2", storage_base_path: tempdir)
-  #       board = Aisweeper::Board.new(id: "2x2", rows: rows, store: board_store)
-
-  #       board.status.won?.should eq(true)
-  #       board.status.lost?.should eq(false)
-  #       board.started?.should eq(true)
-  #       board.ongoing?.should eq(false)
-  #       board.ended?.should eq(true)
-  #     end
-  #   end
-
-  #   it "lost" do
-  #     with_tempdir do |tempdir|
-  #       rows = [
-  #         [
-  #           Aisweeper::Tile.new(infested: true, state: Aisweeper::Tile::State::Explored),
-  #           Aisweeper::Tile.new,
-  #         ],
-  #         [
-  #           Aisweeper::Tile.new,
-  #           Aisweeper::Tile.new,
-  #         ],
-  #       ]
-
-  #       board_store = Aisweeper::BoardStore.new(id: "2x2", storage_base_path: tempdir)
-  #       board = Aisweeper::Board.new(id: "2x2", rows: rows, store: board_store)
-
-  #       board.status.won?.should eq(false)
-  #       board.status.lost?.should eq(true)
-  #       board.started?.should eq(true)
-  #       board.ongoing?.should eq(false)
-  #       board.ended?.should eq(true)
-  #     end
-  #   end
-
-  #   it "ongoing" do
-  #     with_tempdir do |tempdir|
-  #       rows = [
-  #         [
-  #           Aisweeper::Tile.new(infested: true),
-  #           Aisweeper::Tile.new,
-  #         ],
-  #         [
-  #           Aisweeper::Tile.new,
-  #           Aisweeper::Tile.new(state: Aisweeper::Tile::State::Explored),
-  #         ],
-  #       ]
-
-  #       board_store = Aisweeper::BoardStore.new(id: "2x2", storage_base_path: tempdir)
-  #       board = Aisweeper::Board.new(id: "2x2", rows: rows, store: board_store)
-
-  #       board.status.won?.should eq(false)
-  #       board.status.lost?.should eq(false)
-  #       board.started?.should eq(true)
-  #       board.ongoing?.should eq(true)
-  #       board.ended?.should eq(false)
-  #     end
-  #   end
-  # end
+        stats["rows"].should eq(4)
+        stats["columns"].should eq(4)
+        stats["total_cells"].should eq(16)
+        stats["infested"].should eq(2)
+        stats["infested_ratio"].should eq(12.5)
+        stats["explored_ratio"].should eq(7.142857142857143)
+        stats["flagged"].should eq(1)
+      end
+    end
+  end
 end

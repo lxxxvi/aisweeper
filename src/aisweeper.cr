@@ -2,6 +2,8 @@ require "kemal"
 require "./models/tile.cr"
 require "./models/tiles_creator.cr"
 require "./models/board.cr"
+require "./models/board/form.cr"
+require "./models/board/stats.cr"
 require "./models/board/status.cr"
 require "./models/board_store.cr"
 require "./models/rows_creator.cr"
@@ -16,10 +18,24 @@ get "/boards/:id/" do |env|
   render "src/views/boards/show.ecr", "src/views/layouts/layout.ecr"
 end
 
-post "/boards" do |env|
-  board = Aisweeper::Board.find_or_create
+get "/boards/new" do |env|
+  form = Aisweeper::Board::Form.new
+  render "src/views/boards/new.ecr", "src/views/layouts/layout.ecr"
+end
 
-  env.redirect "/boards/#{board.id}/"
+post "/boards" do |env|
+  form = Aisweeper::Board::Form.new(
+    rows: env.params.body["rows"].to_u8,
+    columns: env.params.body["columns"].to_u8,
+    infested: env.params.body["infested"].to_u8
+  )
+
+  if form.valid?
+    board = form.create_new_board
+    env.redirect "/boards/#{board.id}/"
+  else
+    render "src/views/boards/new.ecr", "src/views/layouts/layout.ecr"
+  end
 end
 
 post "/boards/:id" do |env|

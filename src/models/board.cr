@@ -42,6 +42,10 @@ class Aisweeper::Board
     Aisweeper::Board::Status.new(board: self)
   end
 
+  def stats
+    Aisweeper::Board::Stats.new(board: self).call
+  end
+
   def left_click(x : Int8, y : Int8)
     return if status.ended?
 
