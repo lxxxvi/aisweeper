@@ -9,6 +9,226 @@ a {
   color: lightpink;
 }
 
+header {
+  display: flex;
+  justify-content: center;
+  margin: 4rem 0;
+}
+
+header > span {
+  /*color: darkgray;*/
+  padding: 0.5rem;
+  font-size: 4rem;
+  position: relative;
+}
+
+header > span::before {
+  color: black;
+  content: attr(data-letter);
+  position: absolute;
+  left: 0.7rem;
+  top: 0.4rem;
+   z-index: -1;
+}
+
+header > span::after {
+  content: attr(data-letter);
+  position: absolute;
+  left: 0.9rem;
+  top: 0.7rem;
+  z-index: -2;
+}
+
+header > .aisweeper-1::after, header > .aisweeper-6 { color: yellow; }
+header > .aisweeper-2::after, header > .aisweeper-7 { color: lime; }
+header > .aisweeper-3::after, header > .aisweeper-8 { color: powderblue; }
+header > .aisweeper-4::after, header > .aisweeper-9 { color: tomato; }
+header > .aisweeper-5::after, header > .aisweeper-1 { color: springgreen; }
+header > .aisweeper-6::after, header > .aisweeper-2 { color: gold; }
+header > .aisweeper-7::after, header > .aisweeper-3 { color: hotpink; }
+header > .aisweeper-8::after, header > .aisweeper-4 { color: cyan; }
+header > .aisweeper-9::after, header > .aisweeper-5 { color: blueviolet; }
+
+main {
+  display: flex;
+  justify-content: center;
+  margin: 4rem 0;
+}
+
+.button {
+  position: relative;
+  text-decoration: none;
+  display: flex;
+  border-radius: 1rem;
+  justify-content: center;
+  color: Black;
+  width: 100%;
+  padding: 1rem;
+}
+
+.button::before {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  display: flex;
+  border-radius: 1rem;
+  justify-content: center;
+  background-color: lime;
+  width: 100%;
+  height: 100%;
+  top: -0.3rem;
+  left: -0.3rem;
+}
+
+.button::after {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  display: flex;
+  border-radius: 1rem;
+  justify-content: center;
+  background-color: yellow;
+  width: 100%;
+  height: 100%;
+  top: 0.3rem;
+  left: 0.3rem;
+}
+
+.button:hover {
+  background-color: tomato;
+  cursor: pointer;
+}
+
+.button:hover::after, .button:hover::before {
+  display: none;
+}
+
+
+ul.boards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style-type: none;
+  row-gap: 2rem;
+  column-gap: 2rem;
+
+  & li {
+    display: flex;
+
+    & a.new {
+      opacity: 0.8;
+      text-decoration: none;
+      color: white;
+      width: 10rem;
+      height: 10rem;
+      display: grid;
+      padding: 0.5rem;
+      justify-content: center;
+      align-content: center;
+      font-size: 3rem;
+      border-color: white;
+      border-style: dashed;
+      border-width: 0.35rem;
+      border-radius: 0.5rem;
+    }
+
+    & a.new:hover {
+      opacity: 1;
+    }
+
+    & a.board {
+      width: 10rem;
+      height: 10rem;
+      position: relative;
+      display: grid;
+      justify-content: center;
+      align-content: center;
+      padding: 0.5rem;
+      text-decoration: none;
+      padding: 1rem;
+      border-radius: 0.5rem;
+
+      & .north-west { position: absolute; left: 0.5rem; top: 0.5rem; }
+      & .north-east { position: absolute; right: 0.5rem; top: 0.5rem; }
+      & .south-west { position: absolute; left: 0.5rem; bottom: 0.5rem; display: flex; justify-content: center; align-items: center; column-gap: 0.5rem; }
+      & .south-east { position: absolute; right: 0.5rem; bottom: 0.5rem; display: flex; justify-content: center; align-items: center; column-gap: 0.5rem;}
+      & .center-point { font-size: 3rem; }
+    }
+
+    & a.board:hover {
+      background-color: white;
+    }
+
+    & a.board--status-not_started {
+      background-color: Gainsboro;
+      color: Black;
+    }
+
+    & a.board--status-ongoing {
+      background-color: lightblue;
+      color: Black;
+    }
+
+    & a.board--status-won {
+      background-color: lime;
+      color: Black;
+    }
+
+    & a.board--status-lost {
+      background-color: tomato;
+      color: Black;
+    }
+  }
+
+}
+
+.new-board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  & .presets {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 2rem;
+    column-gap: 2rem;
+
+    & form > button {
+      width: 10rem;
+      height: 10rem;
+      font-family: "Comic Sans MS";
+      position: relative;
+      display: grid;
+      justify-content: center;
+      align-content: center;
+      text-decoration: none;
+      padding: 1rem;
+      background-color: Gainsboro;
+      color: Black;
+      border-radius: 0.5rem;
+
+      & .south-west { position: absolute; left: 0.5rem; bottom: 0.5rem; display: flex; justify-content: center; align-items: center; column-gap: 0.5rem; }
+      & .south-east { position: absolute; right: 0.5rem; bottom: 0.5rem; display: flex; justify-content: center; align-items: center; column-gap: 0.5rem;}
+      & .center-point { font-size: 3rem; }
+    }
+
+    & form > button:hover {
+      background-color: white;
+      cursor: pointer;
+    }
+  }
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  column-gap: 2rem;
+  row-gap: 2rem;
+
+}
+
 .xy-center {
   display: flex;
   align-items: center;
@@ -17,13 +237,66 @@ a {
   width: 100%;
 }
 
-.board, .board--row {
+.board-details {
+  position: relative;
+}
+
+.board-stats {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  margin-left: 1rem;
+  min-width: 10rem;
+
+  & dl, dt, dd {
+    margin: 0;
+  }
+
+  & dt {
+    opacity: 0.7;
+  }
+
+  & dd {
+    margin-bottom: 0.5rem;
+  }
+
+  & form > button {
+    width: 10rem;
+    height: 10rem;
+    font-family: "Comic Sans MS";
+    position: relative;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    text-decoration: none;
+    padding: 1rem;
+    background-color: Gainsboro;
+    color: Black;
+    border-radius: 0.5rem;
+
+    & .south-west { position: absolute; left: 0.5rem; bottom: 0.5rem; display: flex; justify-content: center; align-items: center; column-gap: 0.5rem; }
+    & .south-east { position: absolute; right: 0.5rem; bottom: 0.5rem; display: flex; justify-content: center; align-items: center; column-gap: 0.5rem;}
+    & .center-point { font-size: 3rem; }
+  }
+
+  & form > button:hover {
+    background-color: white;
+    cursor: pointer;
+  }
+}
+
+.board-rows {
+  position: relative;
+}
+
+.board-rows,
+.board-rows--row {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-.board--row {
+.board-rows--row {
   display: flex;
 }
 

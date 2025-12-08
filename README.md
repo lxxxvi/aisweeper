@@ -21,8 +21,7 @@ scripts/test
 ### Production
 
 ```sh
-mkdir -p ./bin
-crystal build ./src/aisweeper.cr --output ./bin/aisweeper --release
+scripts/build
 
 KEMAL_ENV=production ./bin/aisweeper
 ```
