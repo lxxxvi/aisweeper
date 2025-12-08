@@ -25,3 +25,9 @@ scripts/build
 
 KEMAL_ENV=production ./bin/aisweeper
 ```
+
+## Screenshots
+
+![Index page of AI sweeper](documentation/images/index.png)
+
+![Index page of AI sweeper](documentation/images/board.png)
