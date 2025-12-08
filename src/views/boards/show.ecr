@@ -1,103 +1,97 @@
-<a href="/">Back</a>
+<div class="board">
+  <a href="/">Back</a>
 
-<h2><%= board.id %></h2>
+  <div class="board-details">
+    <ul class="board-rows">
+      <% board.rows.each_with_index do |row, y| %>
+        <li>
+          <ul class="board-rows--row">
+            <% row.each_with_index do |tile, x| %>
+              <%
+                icon = case tile
+                       when .infected? then "👾"
+                       when .flagged? then "🏴‍☠️"
+                       when .questionmarked? then "❓"
+                       else ""
+                       end
+              %>
+              <li class="tile">
+                <% if board.status.ended? && tile.infested? %>
+                  <output class="xy-center <%= tile.infected? ? "infected" : "infested" %>">
+                    <%= icon %>
+                  </output>
+                <% elsif !tile.state.explored? %>
+                  <form action="/boards/<%= board.id %>/tile/<%= "#{x},#{y}" %>" method="post">
+                    <select name="action" class="hidden">
+                      <option value="left">Left</option>
+                      <option value="right">Right</option>
+                    </select>
 
-<div>
-  <%= board.status.render_as_output %>
-</div>
-
-<% if board.status.ended? %>
-  <%
-    rows = board.rows.size
-    columns = board.rows.first.size
-    infested = board.rows.flatten.count(&.infested?)
-  %>
-  <form action="/boards" method="post">
-    <input type="hidden" name="rows" value="<%= rows %>" />
-    <input type="hidden" name="columns" value="<%= columns %>" />
-    <input type="hidden" name="infested" value="<%= infested %>" />
-    <input type="submit" value="Start another one with <%= rows %>x<%= columns %> (<%= infested %> AIs)" />
-  </form>
-<% end %>
-
-<% stats = board.stats %>
-<table>
-  <thead>
-    <tr>
-      <th>Dimensions</th>
-      <th>Total cells</th>
-      <th>Infested</th>
-      <th>Infested ratio</th>
-      <th>Explored ratio</th>
-      <th>Remaining flags</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <td>
-        <%= "#{stats["rows"]}x#{stats["columns"]}" %>
-      </td>
-      <td>
-        <%= stats["total_cells"] %>
-      </td>
-      <td>
-        <%= stats["infested"] %>
-      </td>
-      <td>
-        <%= stats["infested_ratio"].round %>
-      </td>
-      <td>
-        <%= stats["explored_ratio"].round %>
-      </td>
-      <td>
-        <%= stats["infested"] - stats["flagged"] %>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<ul class="board">
-  <% board.rows.each_with_index do |row, y| %>
-    <li>
-      <ul class="board--row">
-        <% row.each_with_index do |tile, x| %>
-          <%
-            icon = case tile
-                   when .infected? then "👾"
-                   when .flagged? then "🏴‍☠️"
-                   when .questionmarked? then "❓"
-                   else ""
-                   end
-          %>
-          <li class="tile">
-            <% if board.status.ended? && tile.infested? %>
-              <output class="xy-center <%= tile.infected? ? "infected" : "infested" %>">
-                <%= icon %>
-              </output>
-            <% elsif !tile.state.explored? %>
-              <form action="/boards/<%= board.id %>/tile/<%= "#{x},#{y}" %>" method="post">
-                <select name="action" class="hidden">
-                  <option value="left">Left</option>
-                  <option value="right">Right</option>
-                </select>
-
-                <input type="submit"
-                       class="xy-center"
-                       value="<%= icon %>"
-                       <%= board.status.ended? ? "disabled=\"disabled\"" : nil %>
-                       oncontextmenu="this.parentElement.querySelector('select').value = 'right'; this.parentElement.requestSubmit(); return false;"
-                       />
-              </form>
-            <% else %>
-              <% neighbouring_infested_tiles = board.neighbouring_infested_tiles(x: x.to_i8, y: y.to_i8).size %>
-              <output class="xy-center neighboring-infested-tiles-<%= neighbouring_infested_tiles %>">
-                <%= neighbouring_infested_tiles %>
-              </output>
+                    <input type="submit"
+                           class="xy-center"
+                           value="<%= icon %>"
+                           <%= board.status.ended? ? "disabled=\"disabled\"" : nil %>
+                           oncontextmenu="this.parentElement.querySelector('select').value = 'right'; this.parentElement.requestSubmit(); return false;"
+                           />
+                  </form>
+                <% else %>
+                  <% neighbouring_infested_tiles = board.neighbouring_infested_tiles(x: x.to_i8, y: y.to_i8).size %>
+                  <output class="xy-center neighboring-infested-tiles-<%= neighbouring_infested_tiles %>">
+                    <%= neighbouring_infested_tiles %>
+                  </output>
+                <% end %>
+              </li>
             <% end %>
-          </li>
-        <% end %>
-      </ul>
-    </li>
-  <% end %>
-</ul>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+
+    <div class="board-stats">
+      <% stats = board.stats %>
+
+      <dl>
+        <dt>Status</dt>
+        <dd><%= board.status.render_as_output %></dd>
+        <dt>Dimensions</dt>
+        <dd> <%= "#{stats["rows"]}x#{stats["columns"]}" %></dd>
+        <dt>Total cells</dt>
+        <dd><%= stats["total_cells"] %></dd>
+        <dt>Infested</dt>
+        <dd><%= stats["infested"] %></dd>
+        <dt>Infested ratio</dt>
+        <dd><%= stats["infested_ratio"].round.to_i8 %>%</dd>
+        <dt>Explored ratio</dt>
+        <dd><%= stats["explored_ratio"].round.to_i8 %>%</dd>
+        <dt>Remaining flags</dt>
+        <dd>🏴‍☠️ <%= stats["infested"] - stats["flagged"] %></dd>
+      </dl>
+
+      <% if board.status.ended? %>
+        <%
+          rows = board.rows.size
+          columns = board.rows.first.size
+          infested = board.rows.flatten.count(&.infested?)
+        %>
+        <form action="/boards" method="post">
+          <input type="hidden" name="rows" value="<%= rows %>" />
+          <input type="hidden" name="columns" value="<%= columns %>" />
+          <input type="hidden" name="infested" value="<%= infested %>" />
+          <button type="submit">
+            <div class="south-west">
+              <%= Aisweeper::Icons::LucidSkull.new.to_html %>
+              <%= infested %>
+            </div>
+            <div class="south-east">
+              New
+            </div>
+            <span class="center-point">
+              <%= "#{rows}x#{columns}" %>
+            </span>
+          </button>
+        </form>
+      <% end %>
+
+    </div>
+  <div>
+</div>

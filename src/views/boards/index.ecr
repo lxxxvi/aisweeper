@@ -1,51 +1,33 @@
-<h2>All boards</h2>
+<div>
+  <ul class="boards">
+    <li>
+      <a href="/boards/new" class="new">New</a>
+    </li>
 
-<a href="/boards/new">Create new board</a>
-
-<table>
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Status</th>
-      <th>Dimensions</th>
-      <th>Infested</th>
-      <th>Explored</th>
-
-      <th>&nbsp;</th>
-    </tr>
-  </thead>
-
-  <tbody>
     <% boards.each do |board| %>
       <% stats = board.stats %>
-      <tr>
-        <td>
-          <a href="/boards/<%= board.id %>"><%= board.id %></a>
-        </td>
+      <li>
+        <a href="/boards/<%= board.id %>" class="board board--status-<%= board.status.name %>">
+          <div class="north-west">
+            <%= board.id %>
+          </div>
+          <div class="north-east">
+            <%= board.status.render_as_output %>
+          </div>
+          <div class="south-west">
+            <%= Aisweeper::Icons::LucidSkull.new.to_html %>
+            <%= stats["infested"] %>
+          </div>
+          <div class="south-east">
+            <%= Aisweeper::Icons::LucidTelescope.new.to_html %>
+            <%= "#{stats["explored_ratio"].round(0).to_i8}%" %>
+          </div>
 
-        <td>
-          <%= board.status.render_as_output %>
-        </td>
-
-        <td>
-          <%= "#{stats["rows"]}x#{stats["columns"]} (Total #{stats["total_cells"]})" %>
-        </td>
-
-        <td>
-          <%= "#{stats["infested"]} (#{stats["infested_ratio"].round}%)" %>
-        </td>
-
-        <td>
-          <%= "#{stats["explored_ratio"].round}%" %>
-        </td>
-
-        <td>
-          <form action="/boards/<%= board.id %>" method="post">
-            <input type="hidden" name="_method" value="delete" />
-            <input type="submit" value="Delete" />
-          </form>
-        </td>
-      </tr>
+          <span class="center-point">
+            <%= "#{stats["rows"]}x#{stats["columns"]}" %>
+          </span>
+        </a>
+      </li>
     <% end %>
-  </tbody>
-</table>
+  <ul>
+</div>
